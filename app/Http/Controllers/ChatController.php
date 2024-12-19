@@ -1,20 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class ChatController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $users = User::where('role', '!=', 'admin')->latest()->get();
-        return view('admin.user', ['title' => 'User Admin - Web Media'], compact('users'));
+        return view('chat', ['title' => 'Chat - Web Media']);
     }
 
     /**
@@ -62,21 +59,6 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        $content = User::findOrFail($id);
-        $content->delete();
-        return redirect()->route('admin.user')->with(['success' => 'User Berhasil Dihapus!']);
+        //
     }
-
-    public function verify($userId)
-    {
-        $user = User::findOrFail($userId);
-        $user->verify = true; // Atau 1 untuk tipe integer/boolean
-        $user->save();
-
-        // Menyimpan status verifikasi ke session (opsional)
-        session()->put('verified_user_' . $userId, true);
-
-        return redirect()->back()->with('success', 'User verified successfully!');
-    }
-
 }

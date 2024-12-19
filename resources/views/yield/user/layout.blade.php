@@ -174,5 +174,11 @@
             selectedKategoriInput.value = selectedOptions.join(' ');
         });
     </script>
+    <script>
+        function tampilkanAlamat() {
+            const alamatLengkap = "{{ Auth::user()->alamat }}";
+            document.getElementById('alamat').innerHTML = alamatLengkap;
+        }
+    </script>     
 </body>
 </html>

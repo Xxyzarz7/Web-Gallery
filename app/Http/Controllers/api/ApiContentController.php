@@ -1,20 +1,30 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Content;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class ApiContentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $users = User::where('role', '!=', 'admin')->latest()->get();
-        return view('admin.user', ['title' => 'User Admin - Web Media'], compact('users'));
+        $contents = Content::with(['user', 'likes', 'comments'])->latest()->get();
+
+        $contents->transform(function ($content) {
+            $content->image = url('storage/contents/' . $content->image);
+            return $content;
+        });
+    
+        return response()->json([
+            'success' => true,
+            'message' => 'Berhasil Data Contents',
+            'data' => $contents,
+        ]);
     }
 
     /**
@@ -62,21 +72,6 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        $content = User::findOrFail($id);
-        $content->delete();
-        return redirect()->route('admin.user')->with(['success' => 'User Berhasil Dihapus!']);
+        //
     }
-
-    public function verify($userId)
-    {
-        $user = User::findOrFail($userId);
-        $user->verify = true; // Atau 1 untuk tipe integer/boolean
-        $user->save();
-
-        // Menyimpan status verifikasi ke session (opsional)
-        session()->put('verified_user_' . $userId, true);
-
-        return redirect()->back()->with('success', 'User verified successfully!');
-    }
-
 }

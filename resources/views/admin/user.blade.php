@@ -20,25 +20,41 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ( $users as $index => $user )    
-                        <tr>
-                            <th scope="row">{{ $index + 1 }}</th>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->username }}</td>
-                            <td>{{ Str::limit( $user->alamat, 20) }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>
-                                <form id="delete-form-{{ $user->id }}" action="{{ route('admin.user.delete', $user->id) }}" method="POST" class="d-inline">
+                        @foreach ($users as $index => $user)
+                    <tr>
+                        <th scope="row">{{ $index + 1 }}</th>
+                        <td>
+                            {{ $user->name }}
+                            @if ($user->verify)
+                                <i class="bi bi-patch-check-fill text-info"></i>
+                            @endif
+                        </td>                        
+                        <td>{{ $user->username }}</td>
+                        <td>{{ Str::limit($user->alamat, 20) }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>
+                            @if (!$user->verify)
+                                <form action="{{ route('admin.user.verify', $user->id) }}" method="POST" class="d-inline">
                                     @csrf
-                                    @method('DELETE')
-                                    <button type="button" class="btn btn-danger" onclick="sweetalert({{ $user->id }})">
-                                        <i class="bi bi-trash3"></i>
+                                    <button type="submit" class="btn btn-info">
+                                        <i class="bi bi-patch-check-fill text-white"></i>
                                     </button>
-                                </form>                                
-                            </td>
-                        </tr>
-                        @empty
-                        @endforelse
+                                </form>
+                            @else
+                            <button type="submit" class="btn btn-success">
+                                        <i class="bi bi-check-circle-fill text-white"></i>
+                                    </button>
+                            @endif
+                            <form id="delete-form-{{ $user->id }}" action="{{ route('admin.user.delete', $user->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="btn btn-danger" onclick="sweetalert({{ $user->id }})">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>

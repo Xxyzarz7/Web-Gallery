@@ -15,6 +15,7 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
+        'verify',
     ];
 
     protected $hidden = [
@@ -40,6 +41,11 @@ class User extends Authenticatable
     public function hasLiked(Content $content) // mengubah ikon
     {
         return $this->likes()->where('id_contents', $content->id)->exists();
+    }
+
+    public function contents()
+    {
+        return $this->hasMany(Content::class, 'id_users');
     }
     
 }

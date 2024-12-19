@@ -14,4 +14,9 @@ class Like extends Model
         'id_users',
         'tanggal',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_users');
+    }
 }

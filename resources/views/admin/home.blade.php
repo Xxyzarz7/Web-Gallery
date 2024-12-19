@@ -26,7 +26,7 @@
                             <th scope="row">{{ $index + 1 }}</th>
                             <td><img src="{{ asset('/storage/contents/'.$content->image) }}" alt="image" class="img-fluid" style="width: 100px; height: 100px;  object-fit:cover;"></td>
                             <td>{{ $content->user->username }}</td>
-                            <td>{{ $content->judul }}</td>
+                            <td>{{ Str::limit( $content->judul, 15) }}</td>
                             <td>{{ Str::limit( $content->deskripsi, 20) }}</td>
                             <td>{{ $content->kategori }}</td>
                             <td>

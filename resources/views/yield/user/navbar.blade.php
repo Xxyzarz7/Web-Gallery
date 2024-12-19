@@ -23,6 +23,9 @@
                             <li><a href="{{ route('like.index') }}" class="dropdown-item text-uppercase ">Like <span class="badge bg-secondary">New</span></a></li>
                         </ul>
                     </li>
+                    {{-- <li class="nav-item">
+                        <a class="nav-link text-uppercase px-3 {{ request()->is('chat') ? 'active' : '' }}" href="/chat">Chat</a>
+                    </li> --}}
                 </ul>
                 <div class="d-flex mt-5 mt-lg-0 ps-lg-3 align-items-center justify-content-center">
                     <a href="{{ route('logout') }}"><button type="button" class="btn btn-primary ms-md-3">Logout</button></a>

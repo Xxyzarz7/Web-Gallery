@@ -4,33 +4,26 @@
     {{-- Testimonial Section --}}
     <section id="testimonial" class="position-relative py-5">
         <div class="testimonial-pattern-overlay pattern-left position-absolute">
-            <img src="images/pattern-testimonial.png" alt="pattern">
+            <img src="{{ asset('images/pattern-testimonial.png') }}" alt="pattern">
         </div>
        
         {{-- user profile --}}
         <div class="container py-5">
-            <h2 class="text-white fw-bold display-4 mb-4">Profil Web Media</h2>
+            <h2 class="text-white fw-bold display-4 mb-4">Profil {{ $user->username }}</h2> 
             <div class="swiper testimonial-swiper mb-4">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide testimonial-content p-5">                                  
                         <div class="row">
-                            {{-- <div class="col-md-3">
-                                <img src="images/profil.png" alt="image" class="img-fluid">
-                            </div> --}}
                             <div class="col-md-9">
-                                <h5>{{ Auth::user()->username }}
-                                    @if(Auth::user() && Auth::user()->verify)
+                                <h5>{{ $user->username }}
+                                    {{-- @if(session()->has('verified_user_' . $user->id)) 
                                         <i class="bi bi-patch-check-fill text-info"></i>
+                                    @endif --}}
+                                    @if ($user->verify)
+                                        <i   i class="bi bi-patch-check-fill text-info"></i>
                                     @endif
-                                </h5>
-                                <h6><b>{{ Auth::user()->email }}</b></h6>
-                                <h6><b>{{ Auth::user()->name }}</b></h6>
-                                {{-- <p id="alamat">
-                                    {{ Str::limit(Auth::user()->alamat, 20) }}
-                                    @if(strlen(Auth::user()->alamat) > 20)
-                                        <a href="javascript:void(0)" id="baca-selengkapnya" onclick="tampilkanAlamat()" class="text-danger">Baca selengkapnya</a>
-                                    @endif
-                                </p>  --}}
+                                </h5>                                
+                                <h6><b>{{ $user->name }}</b></h6>
                             </div>
                         </div>
                     </div>
@@ -44,74 +37,6 @@
     <section id="blog" class="my-5">
         <div class="container py-5">
             <div class="row align-items-center">
-
-                {{-- button tambah content --}}
-                <div class="col-md-6 col-lg-3">
-                    <div class="mb-3">
-                        <h6>Unggah konten Anda</h6>
-                        <h2 class="fw-bold display-4 mb-3">Klik Di Sini</h2>
-                        <button type="button" class="btn btn-primary mb-5 mb-md-0" data-bs-toggle="modal" data-bs-target="#contentModal">Tambah Konten</button>
-                    </div>
-                </div>
-                {{-- Scrollable Pop-up Modal --}}
-                <div class="modal fade" id="contentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="contentModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title text-dark" id="contentModalLabel">Tambah Konten</h5>
-                            </div>
-                            <div class="modal-body" style="max-height: 45vh; overflow-y: auto;">
-                                <form action="{{ route('profile.store') }}" method="POST" enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="mb-3">
-                                        <label for="foto" class="form-label">Foto</label>
-                                        <input type="file" class="form-control  @error('image') is-invalid @enderror" id="foto" name="image">
-                                        @error('image')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="judul" class="form-label">Judul</label>
-                                        <input type="text" class="form-control  @error('judul') is-invalid @enderror" id="judul" name="judul">
-                                        @error('judul')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="deskripsi" class="form-label">Deskripsi</label>
-                                        <textarea class="form-control  @error('deskripsi') is-invalid @enderror" id="deskripsi" name="deskripsi" rows="4"></textarea>
-                                        @error('deskripsi')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="kategori" class="form-label">Kategori</label>
-                                        <select class="form-control @error('kategori') is-invalid @enderror" id="kategori" name="kategori">
-                                            <option value="">Pilih Kategori</option>
-                                            <option value="karya">Karya Seni</option>
-                                            <option value="game">Game</option>
-                                            <option value="meme">Meme</option>
-                                            <option value="foto">Foto</option>
-                                            <option value="random">Random</option>
-                                            <option value="design">Design</option>
-                                            <option value="berita">Berita</option>
-                                            <option value="color">Color</option>
-                                            <option value="wallpaper">Wallpaper</option>
-                                            <option value="animasi">Animasi</option>
-                                        </select>
-                                        @error('kategori')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <button type="submit" class="btn btn-primary w-100">Tambah</button>
-                                </form>                                
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 {{-- Content --}}
                 @forelse ( $contents as $content )
                     <div class="col-md-6 col-lg-3 {{ $content->kategori }}">
@@ -121,14 +46,6 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li><h5 class="dropdown-header">Aksi</h5></li>
-                                <li><a class="dropdown-item" href="{{ route('content.edit', $content->id) }}">Perbarui Konten</a></li>
-                                <form id="delete-form-{{ $content->id }}" action="{{ route('content.delete', $content->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <li>
-                                        <button type="button" class="dropdown-item" onclick="sweetalert({{ $content->id }})">Hapus Konten</button>
-                                    </li>
-                                </form>
                                 <li>
                                     <a class="dropdown-item" href="{{ asset('/storage/contents/'.$content->image) }}" download="{{ $content->judul }}">Download Foto</a>
                                 </li>
@@ -193,8 +110,8 @@
                                                     <div id="panelsStayOpen-collapseTwo-{{ $comment->id }}" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
                                                         <div class="accordion-body">
                                                             <p>{{ $comment->komentar }}</p>
-                                                            @if ($comment->id_users == Auth::id() || $content->user->id == Auth::id())
-                                                                <form action="{{ route('comments.deleteCommentall', $comment->id) }}" method="POST">
+                                                            @if ($comment->id_users == Auth::id())
+                                                                <form action="{{ route('comments.delete', $comment->id) }}" method="POST">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                     <button type="submit" class="btn btn-danger"><i class="bi bi-trash3"></i></button>

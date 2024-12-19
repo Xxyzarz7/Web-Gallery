@@ -24,20 +24,32 @@
                             </div>
                             <div class="mb-4">
                                 <label for="logindeskripsi" class="form-label mb-0">Deskripsi</label>
-                                <input type="text" class="form-control border-0 @error('deskripsi') is-invalid @enderror" id="logindeskripsi" name="deskripsi" value="{{ old('deskripsi', $content->deskripsi) }}">
+                                <textarea class="form-control border-0 @error('deskripsi') is-invalid @enderror" id="logindeskripsi" name="deskripsi" rows="4">{{ old('deskripsi', $content->deskripsi) }}</textarea>
                                 @error('deskripsi')
                                     <p class="text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
                             <div class="mb-4">
                                 <label for="loginkategori" class="form-label mb-0">Kategori</label>
-                                <input type="text" class="form-control border-0 @error('kategori') is-invalid @enderror" id="loginkategori" name="kategori" value="{{ old('kategori', $content->kategori) }}">
+                                <select class="form-control border-0 @error('kategori') is-invalid @enderror" id="loginkategori" name="kategori">
+                                    <option value="">Pilih Kategori</option>
+                                    <option value="karya" {{ old('kategori', $content->kategori) == 'karya' ? 'selected' : '' }}>Karya Seni</option>
+                                    <option value="game" {{ old('kategori', $content->kategori) == 'game' ? 'selected' : '' }}>Game</option>
+                                    <option value="meme" {{ old('kategori', $content->kategori) == 'meme' ? 'selected' : '' }}>Meme</option>
+                                    <option value="foto" {{ old('kategori', $content->kategori) == 'foto' ? 'selected' : '' }}>Foto</option>
+                                    <option value="random" {{ old('kategori', $content->kategori) == 'random' ? 'selected' : '' }}>Random</option>
+                                    <option value="design" {{ old('kategori', $content->kategori) == 'design' ? 'selected' : '' }}>Design</option>
+                                    <option value="berita" {{ old('kategori', $content->kategori) == 'berita' ? 'selected' : '' }}>Berita</option>
+                                    <option value="color" {{ old('kategori', $content->kategori) == 'color' ? 'selected' : '' }}>Color</option>
+                                    <option value="wallpaper" {{ old('kategori', $content->kategori) == 'wallpaper' ? 'selected' : '' }}>Wallpaper</option>
+                                    <option value="animasi" {{ old('kategori', $content->kategori) == 'animasi' ? 'selected' : '' }}>Animasi</option>
+                                </select>
                                 @error('kategori')
                                     <p class="text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
                             <button type="submit" class="btn btn-primary service-btn mt-3">Perbarui</button>
-                        </form>
+                        </form>                        
                     </div>
 
                 </div>

@@ -1,4 +1,4 @@
-@extends('yield/admin/layout')
+@extends('yield/layout')
 
 @section('body')
     {{-- Body --}}

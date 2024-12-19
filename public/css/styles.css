@@ -591,3 +591,10 @@ iconify-icon.quote {
   pointer-events: none;
   transition: opacity 0.5s ease-in-out;
 }
+
+@media (max-width: 768px) {
+  .img-fluid {
+      width: 100% !important; /* Gambar akan memenuhi lebar kontainer */
+      height: auto !important; /* Proporsi gambar tetap */
+  }
+}

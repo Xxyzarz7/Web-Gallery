@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Content;
 use App\Models\Like;
 use App\Models\Comment;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -73,7 +74,8 @@ class ContentController extends Controller
      */
     public function show(string $id)
     {
-        $content = Content::findOrFail($id);
+        // $content = Content::findOrFail($id);
+        $content = Content::with('likes.user')->findOrFail($id);
         return view('profile.index', compact('contents'));
     }
 
@@ -175,4 +177,31 @@ class ContentController extends Controller
 
         return redirect()->back()->with('error', 'Anda tidak memiliki izin untuk menghapus komentar ini.');
     }
+
+    public function deleteCommentall($id)
+    {
+        $comment = Comment::findOrFail($id);
+    
+        // Periksa apakah pengguna adalah pembuat komentar atau pembuat konten
+        if ($comment->id_users == Auth::id() || $comment->content->user->id == Auth::id()) {
+            $comment->delete();
+            return redirect()->back()->with('success', 'Komentar berhasil dihapus.');
+        }
+    
+        return redirect()->back()->with('error', 'Anda tidak memiliki izin untuk menghapus komentar ini.');
+    }
+
+    // melihat profil pengguna lain
+    public function showprofile(string $username)
+    {
+        // Cari user berdasarkan username
+        $user = User::where('username', $username)->firstOrFail();
+
+        // Ambil konten yang dimiliki user
+        $contents = $user->contents()->latest()->get();
+
+        // Return view dengan data user dan konten
+        return view('profile.user.profile',['title' => 'Profil - Web Media'], compact('user', 'contents'));
+    }
+    
 }

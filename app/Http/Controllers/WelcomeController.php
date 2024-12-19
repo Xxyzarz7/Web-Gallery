@@ -54,6 +54,7 @@ class WelcomeController extends Controller
             $user->username = $request->username;
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
+            $user->verify = false; 
             $user->save();
             return redirect()->route('welcome')->with('success', 'Berhasil register');
         } else {

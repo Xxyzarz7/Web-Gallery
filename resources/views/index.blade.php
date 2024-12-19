@@ -13,10 +13,22 @@
                     @forelse($contents as $content)
                         <div class="col-md-6 col-lg-3 {{ $content->kategori }}">
                             <div class="mb-3">
-                                <img src="{{ asset('/storage/contents/'.$content->image) }}" alt="image" class="img-fluid" style="width: 250px; height: 250px;  object-fit:cover;">
+                                <a href="" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="{{ asset('/storage/contents/'.$content->image) }}" alt="image" class="img-fluid" style="width: 250px; height: 250px; object-fit: cover;">
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><h5 class="dropdown-header">Aksi</h5></li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ asset('/storage/contents/'.$content->image) }}" download="{{ $content->judul }}">Download Foto</a>
+                                    </li>
+                                </ul>      
                                 <h6 class="my-3">{{ $content->tanggal }}</h6>
-                                    <h5 class="mb-3">{{ $content->judul }}</h5>
-                                    <h6>{{ $content->user->username }}</h6>
+                                    <h5 class="mb-3">{{ Str::limit( $content->judul, 15) }}</h5>
+                                    <h6>{{ $content->user->username }}
+                                        @if ($content->user->verify)
+                                            <i class="bi bi-patch-check-fill text-info"></i>
+                                        @endif
+                                    </h6>
                                 <p>{{ Str::limit( $content->deskripsi, 20) }}</p>
                                 <div class="d-flex justify-content-start">
                                     <div class="row">
@@ -36,18 +48,24 @@
                                         </div>
                                         {{-- Modal for comments --}}
                                         <div class="modal fade" id="showContentModal-{{ $content->id }}" tabindex="-1" aria-labelledby="showContentModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-dialog modal-lg modal-dialog-centered">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="showContentModalLabel">Komentar</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body" style="max-height: 260px; overflow-y: auto;">
                                                         <h3>{{ $content->judul }}</h3>
-                                                        <img src="{{ asset('/storage/contents/'.$content->image) }}" alt="Image" class="img-fluid mb-3">
+                                                        <img src="{{ asset('/storage/contents/'.$content->image) }}" alt="Image" class="img-fluid d-block mx-auto mb-3">
                                                         <h5>{{ $content->user->username }}</h5>
                                                         <p><b>Kategori : {{ $content->kategori }}</b></p>
                                                         <p>{{ $content->deskripsi }}</p>
+                                                        <h5>Like:</h5>
+                                                        <hr>
+                                                        @forelse($content->likes as $like)
+                                                            <p class="alert alert-primary">{{ $like->user->username }}</p>
+                                                        @empty
+                                                            <p class="alert alert-danger">Belum ada yang menyukai konten ini.</p>
+                                                        @endforelse
                                                         <h5>Komentar :</h5> <hr>
                                                         <div class="accordion col-md-13" id="accordionPanelsStayOpenExample">
                                                             {{-- Check if content has comments --}}
